@@ -8,7 +8,6 @@ python:
   - '3.9'
 install:
   - pip install -r requirements.txt
-  - pip install .
   - pip3 install --upgrade pip
 jobs:
   include:
