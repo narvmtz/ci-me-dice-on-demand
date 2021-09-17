@@ -1,31 +1,23 @@
 language: python
 os: linux
-dist: xenial
 python:
-  - '3.6'
-  - '3.7'
-  - '3.8'
   - '3.9'
 install:
   - pip install -r requirements.txt
-  - pip3 install --upgrade pip
+  - pip install -U pytest
+script: python -m pytest -v
 jobs:
   include:
     - stage: tests
-      script: python3 test_dice.py || python test_dice.py
+      script: python -m pytest -v
     - stage: deploy staging
       script: skip
       deploy:
         provider: heroku
-        api_key:
-          secure: dusiUaW3cOZp3QKmY4Ycoc4rqmrMRzWhiLxCjGp8DZfc1/yw2AYX88VOsWgHx2OVE9WjQmKFV6elCPSCBGBWhwny0kTl2fiqj6/bnrYY4BzWOxIFatQO9Q2BOptCAeS4KFW7EA2LlzYI2VSMYd6zv/nBvBeNPReOMf+QAbXlic5Rg1zBBD7uB2xYR4eRGkkFLM9NcPy2Btt6vICLrAE+TA7pas+6KFw6JSEBO5Wq2Gq+eiUSYec7kuP0n8laLPytF+0YIoVRY68u7U8aP6qn6CFbjZeAwkelEvGOnJbEJzxg4c13WtFtlS7CJXvhqQkMuSD/KzbzLeKMihKF1IbUJcsm2N7DsD9IgGENqvmwrStpoOWxSRT3+jrnwvUbCvUgcETWu6ShVOd9u2/7plvhVqCFtFKNar4RGpegW3OzCqgQetu52Pm6yv30S01H1HiE9R5rSVEi/kFTR4msycYeM/1ZgAu4Rb9M1vvO+pksuEAWAzQuAW8eEsc5gVqo4gMd8A29yVUwluY4Q3jM49V2SGYNXzjpirfmU9igahg0Y/daZnR4pm8r2mF6h4B0dldoVvX2D7jC/4TRRIeGWTqVu63lUFVnoYHhIaM7n0lf1EB5kWMukp+7bk4Soj9ZAPiGOFOB5wttA92sRLMNwzxCImzi8KH86zJKBRjp+DvUsk8=
+        api_key: $HEROKU_AUTH_TOKEN
         app: hw2-ci-me-dice
         on:
           repo: narvmtz/ci-me-dice-on-demand
           branch: main
-        skip_cleanup: true
     - stage: test deploy
-      script: python3 test_dice.py || python test_dice.py
-      on:
-        all_branches: true
-        condition: '$TRAVIS_BRANCH =~ ^(staging|production)$'
+      script: 'curl http://hw2-ci-me-dice.herokuapp.com'
