@@ -23,9 +23,7 @@ jobs:
         on:
           repo: narvmtz/ci-me-dice-on-demand
           branch: main
-        skip_cleanup: true
     - stage: test deploy
       script: python3 test_dice.py || python test_dice.py
       on:
-        all_branches: true
-        condition: '$TRAVIS_BRANCH =~ ^(staging|production)$'
+        branch: staging
