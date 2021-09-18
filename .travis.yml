@@ -13,25 +13,22 @@ jobs:
       script: python -m pytest -v
     - stage: deploy staging
       script: skip
-      deploy:
+      deploy: &deploy
         provider: heroku
         strategy: api
         api_key: '$HEROKU_AUTH_TOKEN'
         app: hw2-ci-me-dice
-        on: &1
+        on:
           repo: narvmtz/ci-me-dice-on-demand
           branch: main
     - stage: deploy to production
       script: skip
       deploy:
-        provider: heroku
-        strategy: api
-        api_key: '$HEROKU_AUTH_TOKEN'
+        <<: *deploy
         app: hw2-ci-me-dice-prod
-        on: *1
 notifications:
   slack:
     rooms:
-      - secure: QYvk2aCgJC0NKaPVu6vRBRgYtop7xSR3E89cJoImVKHyuUc4aMN5LMZgdOd+ECa/F8Hf/6uIzvHNkVNutzDejm36q9b4Xd6gb/McAY4xJvO3K6gxE3EMcSxNzbDVPAtl9QscG9K95kYc4i2z2CAKMHjWjdDwCve7ccbluBXRitnGFwDD200kFScbbrH94JLpbdOSPq4a9zlVEBwzJI8C/P5vAjsvGMZQiN7eRK83qOe9y85CNC34FhcNrsqaiMQcKnsC/YnFA9nIw+nORHP1tM3VXwrDetj24qne1QchL8ZPJcFuXJIHvNvcBMN6ASWArkJSCnjGND31ui8kj1R9cSfmYCyxyxRI7k5Yx12gbbXCehh0P1kXzv2XLrX5nbZKTpGSFvr08HOF8dA7IEaLPa2DJi5B6gdcZ6Mqe/IX4DldpoJnPdytvX/Iitawbv3coBfLrYp1yRYALXGgnTlPom8h0D/XGDyRqq1UjKrpe2pScyOcKVOEzLrlxsFbpf5ngA1pF/kHGv1crKTqJj2q1n0pAKTYX4aD1njO+hbtS7+0xEZaoejV8bAXrPTyibClTEyk+MTEPOa6Y7eJ+bSU1Eprin3oC4/Q1hCNq7TQes4uJNjjR47WGpstiUJgZD5oDkrxxIcTGuv9m1Z79QdkZ4S07gjqwz6NdG8uleCgJAM=
+      - secure: $SLACK_TOKEN
     on_success: change
     on_failure: always
