@@ -13,6 +13,7 @@ jobs:
       script: python -m pytest -v tests/test_dice.py
     - stage: deploy staging
       script: skip
+      strategy: api
       deploy: &deploy
         provider: heroku
         api_key: $HEROKU_AUTH_TOKEN
@@ -22,6 +23,7 @@ jobs:
           branch: main
     - stage: deploy to production
       script: skip
+      strategy: api
       deploy:
         <<: *deploy
         app: hw2-ci-me-dice-prod
