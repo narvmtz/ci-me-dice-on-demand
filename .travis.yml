@@ -20,8 +20,6 @@ jobs:
         on:
           repo: narvmtz/ci-me-dice-on-demand
           branch: main
-    - stage: test deploy
-      script: 'curl http://hw2-ci-me-dice.herokuapp.com'
     - stage: deploy to production
       script: skip
       deploy:
