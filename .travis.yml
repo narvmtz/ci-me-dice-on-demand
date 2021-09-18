@@ -10,7 +10,7 @@ script: python -m pytest -v
 jobs:
   include:
     - stage: tests
-      script: python -m pytest -v tests/test_dice.py
+      script: python -m pytest -v
     - stage: deploy staging
       script: skip
       deploy: &deploy
