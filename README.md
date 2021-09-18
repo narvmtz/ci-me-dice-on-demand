@@ -1,16 +1,20 @@
+[![Build Status](https://app.travis-ci.com/narvmtz/ci-me-dice-on-demand.svg?branch=main)](https://app.travis-ci.com/narvmtz/ci-me-dice-on-demand)
+
 # ci-me-dice-on-demand
 
-Sample Python app for learning CI. You will get a flexible dice on demand! 
+Sample Python app for learning CI. You will get a flexible dice on demand!
 
 This application is written in Python and uses Flask as the web framework. It serves a single HTML page.  
 Gunicorn is used for the production server.  
 Continous Integration is managed using Travis-CI  
-Continous Deployment is managed using Heroku  
+Continous Deployment is managed using Heroku
 
 # :page_with_curl: Instructions
+
 1. Clone this repo
 2. Navigate to the directory
 3. Execute this:
+
 ```
 # This will create and activate a virtualenv. Using a virtual environment allows you to manage your project’s dependencies without messing with system-level files shared by all applications.
 python3 -m venv venv
@@ -27,10 +31,13 @@ pip3 install -r requirements.txt
 Now that all dependencies are installed, we can run the program!
 
 4. To test the app:
+
 ```
 python3 -m pytest -v tests/test_dice.py
 ```
+
 5. To run the app:
+
 ```
 flask run
 ```
