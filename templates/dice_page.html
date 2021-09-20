@@ -29,12 +29,12 @@
     function rollDice()
     {
       //Get the value of number of sides of the dice
-      var num = document.getElementById("dicesides").value;
+      const num = document.getElementById("dicesides").value;
       //Calculate roll
       if(num < 0 ){
         alert("number must be bigger than zero")
       } else{
-      var ans = Math.floor((Math.random() * num) + 1);
+      const ans = Math.floor((Math.random() * num) + 1);
       //Print roll
       document.getElementById("ans").innerHTML = ans;
     }}
