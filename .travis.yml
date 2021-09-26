@@ -1,0 +1,40 @@
+language: python
+os: linux
+dist: xenial
+python:
+  - '3.8'
+services:
+  - docker
+install:
+  - pip install -r requirements.txt
+jobs:
+  include:
+    - stage: tests
+      script: python -m pytest -v
+    - stage: deploy to Dockerhub
+      script:
+        - docker login -u="$USERNAME" -p="$DOCKER_PASSWORD"
+        - docker build -t $USERNAME/$DOCKER_REPO .
+        - docker images
+        - docker push $USERNAME/$DOCKER_REPO
+    - stage: deploy staging heroku
+      script: skip
+      deploy: &deploy
+        provider: heroku
+        strategy: api
+        api_key: '$HEROKU_AUTH_TOKEN'
+        app: hw3-ci-me-dice
+        on:
+          repo: $USER/$REPO
+          branch: hw3-docker
+    - stage: deploy to production heroku
+      script: skip
+      deploy:
+        <<: *deploy
+        app: hw3-ci-me-dice-prod
+notifications:
+  slack:
+    rooms:
+      - secure: e37y4rzJ4f4SXUjy6B8/2irRC8d5LQ11ZIHKZYZ2tiwOZLzhKTdfpf/XpwzTCxdXxNX2vOgmDxnf5RlrCB6zDtUcgKkbkylOx+wiMnVrpFlbvsKTD98Ml0iDy+/WNuY1rr+kvTT/LvVLoA6B5vea25mLrIdNvIBsfes9HoKvMvFKQVHRvkDl7rtUrSHPQ1A/TOLfPLxwhsJxh7XqVrx+mj/WoyrRLe+OEfo5LrH/iOZgd1qcalges3Jl+UIdsOSKofbpVsxsqxRMyR4zAKwRtsoI2nxfDV9Mr0/jFg58sFiy4HGoGntacvcyo7izy7d+VMfZ53lsPLzNvwc1AhHmb4oLUEGB2rTmY8TmANiFF+vt5riw4q3KmeOXM5dD/ji27HElq68BcrE/YbswCTpa9B55LQ2nwN6cKOep3dqPTqsH47Pbf1ycCNOhHBB89xtjgvR6H6FX+fgKjMuY5AcVmyiOO+o4TWOMaxYXkbVyBzf77vMwFoyX1izBTrjUco9vz7UjU6RI5AYK7K7g9V+5HriTrDH5cgnh5dIdgnCdk9Dl/+yGH6vCFTVltjEy5TXRtivv6BFJ/WsHu05nRpehkDTD5HV+eKdbpNR0ngL3ZNxqtWnDtS3h6u6YnKy9ph+HUCi5aUAp2Y1vY5/qOlp/Rvj/EyMOR/V3045qCMUZlvA=
+    on_success: always
+    on_failure: always
